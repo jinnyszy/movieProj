@@ -28,3 +28,4 @@ Trending:
 # https://flowbite.com/docs/components/navbar/ 
 # https://www.themoviedb.org/
 # https://reactrouter.com/en/main
+# https://developer.themoviedb.org/reference/keyword-details
