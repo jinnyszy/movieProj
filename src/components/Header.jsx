@@ -1,4 +1,4 @@
-import Navigator from "../utils/Navigator";
+import Navigator from "../config/utils/Navigator";
 
 const Header = () => {
   return (
