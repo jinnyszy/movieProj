@@ -8,25 +8,35 @@ const options = {
     },
 };
 
-async function fetchStuff({ queryKey }) {
-    //implement fetch constants here
+const fetchMovies = async () => {
+    const response = await fetch(
+        `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_API_KEY}`
+    );
+    const data = await response.json();
+    console.log("res", data?.results);
+    return data;
+};
 
-    //passing obj in query
+const fetchTv = async () => {
+    const response = await fetch(
+        `https://api.themoviedb.org/3/discover/tv?api_key=${import.meta.env.VITE_API_KEY}`
+    );
+    const data = await response.json();
+    console.log("res", data?.results);
+    return data;
+};
 
-    const res = await fetch(
-        `https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1`,
-        options
-    )
-        // .then((response) => response.json())
-        // .then((response) => console.log(response))
-        .catch((err) => console.error(err));
+const fetchNowShowing = async () => {
+    const response = await fetch(
+        `https://api.themoviedb.org/3/movie/now_playing?api_key=${import.meta.env.VITE_API_KEY}`
+    );
+    const data = await response.json();
+    console.log("res", data?.results);
+    return data;
+};
 
-    console.log('res', res)
-
-    if (!res) {
-        throw new Error(`something went wrong`);
-    }
-    return res.json();
+export default {
+    fetchMovies,
+    fetchTv,
+    fetchNowShowing
 }
-
-export default fetchStuff
