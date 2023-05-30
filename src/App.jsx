@@ -1,26 +1,62 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Movies from "./pages/Movies";
-import TrendingNow from "./pages/TrendingNow";
-import Tv from "./pages/Tv";
-function App() {
+import { useState } from 'react';
+import { BrowserRouter as Router, NavLink, Route, Routes } from 'react-router-dom';
+import Carousel from './components/Carousel';
+import Movies from './Pages/Movies';
+import Tv from './Pages/Tv';
+//import Details from './Pages/Details';
+
+const App = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
   return (
-    <div>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/movies" element={<Movies />} />
-          <Route path="/trending" element={<TrendingNow />} />
-          <Route path="/tv" element={<Tv />} />
-        </Routes>
-      </Router>
-    </div>
-    // <>
-    //   <div className="text-purple-600">index page</div>
-    //   <div>The env variables are shown below:</div>
-    //   <div>{import.meta.env.VITE_API_KEY}</div>
-    // </>
+    <Router>
+      <div>
+        <header className="bg-gray-800 text-white p-4">
+          <nav className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold">AAAAAAAAAAAAAAAAAA</h1>
+            </div>
+            <div>
+              <input
+                type="text"
+                placeholder="Search movies or TV shows"
+                className="bg-gray-700 text-white px-4 py-2 rounded"
+                value={searchTerm}
+                onChange={handleSearch}
+              />
+            </div>
+            <div>
+              <ul className="flex space-x-4">
+                <li>
+                  <NavLink exact to="/" className="text-white" activeClassName="font-bold">
+                    Movies
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/tv" className="text-white" activeClassName="font-bold">
+                    TV
+                  </NavLink>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </header>
+        <div className="mt-8">
+          <Carousel />
+          <Routes>
+            <Route exact path="/" component={Movies} />
+            <Route path="/tv" component={Tv} />
+            {/* <Route path="/search" component={Details} /> */}
+          </Routes>
+        </div>
+      </div>
+    </Router>
   );
-}
+};
+
+
 
 export default App;

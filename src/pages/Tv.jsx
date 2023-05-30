@@ -1,5 +1,6 @@
-import Header from "../components/Header";
 const Tv = () => {
-  return <Header />;
+  <div>
+    hi
+  </div>
 };
 export default Tv;

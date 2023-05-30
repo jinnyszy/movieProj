@@ -1,7 +1,8 @@
-import Header from "../components/Header";
 const Movies = () => {
-  return (
-      <Header />
-  );
+    return (
+        <div>
+            hi
+        </div>
+    );
 };
 export default Movies;
