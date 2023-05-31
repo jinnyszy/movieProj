@@ -1,66 +1,54 @@
-// import { useState, useContext } from "react";
-// import { useParams, useNavigate } from "react-router-dom";
-// import { useQuery } from "@tanstack/react-query";
-// //import Carousel from "./Carousel";
-// import fetchStuff from "../utilities/fetchStuff";
-// import ErrorBoundary from "../components/ErrorBoundary";
-// //import Modal from "./Modal";
-// //import AdoptedPetContext from "./AdoptedPageContext";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import DetailsLayout from "../components/DetailsLayout";
 
-// const Details = () => {
-//     const { id } = useParams();
-//     const [showModal, setShowModal] = useState(false); sssss
-//     const navigate = useNavigate();
-//     // eslint-disable-next-line no-unused-vars
-//     //const [_, setAdoptedPet] = useContext(AdoptedPetContext);
-//     //fetchPet if id does not exist in cache
-//     const results = useQuery(["details", id], fetchStuff);
+const Details = () => {
+    const { id } = useParams();
+    const [details, setDetails] = useState(null);
+    const [img, setImg] = useState("");
 
-//     if (results.isLoading) {
-//         return (
-//             <div className="loading-pane">
-//                 <h2 className="loader">🎃</h2>
-//             </div>
-//         )
-//     }
+    useEffect(() => {
+        const fetchDetails = async () => {
+            try {
+                const response = await fetch(
+                    `https://api.themoviedb.org/3/movie/${id}?api_key=${import.meta.env.VITE_API_KEY}`
+                );
+                const data = await response.json();
+                console.log('details', data)
+                setDetails(data);
+                setImg(`https://api.themoviedb.org/3/movie/${id}`)
+            } catch (error) {
+                console.error(error);
+            }
+        };
 
-//     const movies = results?.results[0]
+        fetchDetails();
+    }, [id]);
 
-//     return (
-//         <div className="details">
-//             {/* <Carousel images={movies.images} /> */}
-//             <div>
-//                 <h1>{movies.title}</h1>
-//                 <h2>{movies.popularity} - {movies.vote_average},{movies.vote_count}</h2>
-//                 <button onClick={() => setShowModal(true)}>Adopt</button>
-//                 <p>{movies.overview}</p>
-//                 {/* {
-//                     showModal ? (
-//                         <Modal>
-//                             <div>
-//                                 <h1>Would you like to adopt {movies.name}?</h1>
-//                                 <div className="buttons">
-//                                     <button onClick={() => {
-//                                         setAdoptedPet(pet);
-//                                         navigate("/");
-//                                     }}>YES</button>
-//                                     <button onClick={() => setShowModal(false)}>NO</button>
-//                                 </div>
-//                             </div>
-//                         </Modal>
-//                     ) : null
-//                 } */}
-//             </div>
-//         </div>
-//     )
-// };
+    if (!details) {
+        return <div>Loading...</div>;
+    }
 
-// function DetailsErrorBoundary() {
-//     return (
-//         <ErrorBoundary errorMsg={<h2>haha error</h2>}>
-//             <Details />
-//         </ErrorBoundary>
-//     )
-// }
+    return (
+        <DetailsLayout
+            backgroundImage={`https://image.tmdb.org/t/p/w500/${details.backdrop_path}`}
+            posterImage={`https://image.tmdb.org/t/p/w500/${details.poster_path}`}
+            title={details.title}
+            release_date={details.release_date}
+            vote_average={details.vote_average}
+            overview={details.overview}
+        />
+        // <div>
+        //     <h1 className="text-2xl font-bold mb-4">{details.title}</h1>
+        //     <img
+        //         src={`https://image.tmdb.org/t/p/w500/${details.poster_path}`}
+        //         alt={details.title}
+        //         className="w-64 h-96 object-cover rounded-lg"
+        //     />
+        //     <p className="text-gray-500">{details.release_date}</p>
+        //     <p className="mt-2">{details.overview}</p>
+        // </div>
+    );
+};
 
-// export default DetailsErrorBoundary;
+export default Details;

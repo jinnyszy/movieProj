@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import ErrorBoundary from "./ErrorBoundary";
 
 const Carousel = (props) => {
@@ -28,7 +28,7 @@ const Carousel = (props) => {
                                 <h2 className="text-lg font-bold mt-2">{item.title}</h2>
                                 <p className="text-gray-500">{item.release_date}</p>
                                 <p className="mt-2">{truncateText(item.overview, 50)}</p>
-                                <a href={`/movie/${item.id}`} className="text-blue-500 hover:underline"> Read More </a>
+                                <Link to={`/movies/${item.id}`} className="text-blue-500 hover:underline"> Read More </Link>
                             </div>
                         ))
                         : <ErrorBoundary errorMsg={<h2>haha error</h2>} />}

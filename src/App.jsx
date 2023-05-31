@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { BrowserRouter as Router, NavLink, Route, Routes } from 'react-router-dom';
 import Movies from './Pages/Movies';
 import Tv from './Pages/Tv'
-import Home from './pages/Home';
-//import Details from './Pages/Details';
+import Home from './Pages/Home';
+import Details from './Pages/Details';
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -52,7 +52,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/movies" element={<Movies />} />
             <Route path="/tv" element={<Tv />} />
-            {/* <Route path="/search" component={Details} /> */}
+            <Route path="/movies/:id" element={<Details />} />
           </Routes>
         </div>
       </div>
