@@ -3,7 +3,7 @@ import Carousel from '../components/Carousel'
 import CardList from "../components/CardList";
 const Home = () => {
     const [movies, setMovies] = useState([]);
-
+    console.log(import.meta.env.VITE_API_KEY)
     useEffect(() => {
         const fetchMovies = async () => {
             try {

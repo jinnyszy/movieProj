@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router, NavLink, Route, Routes } from 'react-router-dom';
 import Movies from './Pages/Movies';
 import Tv from './Pages/Tv'
@@ -10,10 +11,11 @@ const App = () => {
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
+  console.log(import.meta.env.VITE_API_KEY)
 
   return (
-    <Router>
-      <div>
+    <div>
+      <Router>
         <header className="bg-gray-800 text-white p-4">
           <nav className="flex items-center justify-between">
             <div>
@@ -55,8 +57,8 @@ const App = () => {
             <Route path="/movies/:id" element={<Details />} />
           </Routes>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </div>
   );
 };
 
