@@ -1,28 +1,25 @@
-import { useEffect, useState } from "react";
-import CardList from '../components/CardList'
-//import fetchMovies from "../utilities/fetchStuff";
+import React, { useState } from 'react';
+import { useFetchMoviesQuery } from '../utilities/slice';
+import CardList from '../components/CardList';
+
 const Movies = () => {
-    const [movies, setMovies] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1); // Define and initialize currentPage using useState
 
-    useEffect(() => {
-        const fetchMovies = async () => {
-            try {
-                const response = await fetch(
-                    `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_API_KEY}`
-                );
-                const data = await response.json();
-                console.log("res", data?.results);
-                setMovies(data.results);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        fetchMovies();
-    }, []);
+  const { data: movies, total_pages: totalPages } =
+    useFetchMoviesQuery(currentPage);
 
-    return (
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
 
-        <CardList list={movies} />
-    );
+  return (
+    <CardList
+      list={movies}
+      listPages={totalPages}
+      currentPage={currentPage}
+      handlePageChange={handlePageChange}
+    />
+  );
 };
+
 export default Movies;
