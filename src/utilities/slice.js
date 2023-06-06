@@ -21,6 +21,9 @@ export const moviesApi = createApi({
     fetchMovieGenres: builder.query({
       query: () => 'genre/movie/list',
     }),
+    fetchSearch: builder.query({
+      query: (query = '') => `search/multi?query=${query}`,
+    })
   }),
 });
 
@@ -28,6 +31,7 @@ export const {
   useFetchNowShowingQuery,
   useFetchMoviesQuery,
   useFetchMovieGenresQuery,
+  useFetchSearchQuery
 } = moviesApi;
 
 export const tvSeriesApi = createApi({

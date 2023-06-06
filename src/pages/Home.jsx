@@ -14,9 +14,7 @@ const Home = () => {
   const nowShowing = nowShowingQuery.data;
   const movies = moviesQuery.data;
   const tv = tvQuery.data;
-  console.log('ewew', nowShowing);
-  console.log('sadasd', movies);
-  console.log('frfrf', tv);
+
   return (
     <div className="flex flex-wrap justify-evenly">
       {/* Now Showing */}

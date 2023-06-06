@@ -5,21 +5,32 @@ import CardList from '../components/CardList';
 const Movies = () => {
   const [currentPage, setCurrentPage] = useState(1); // Define and initialize currentPage using useState
 
-  const { data: movies, total_pages: totalPages } =
-    useFetchMoviesQuery(currentPage);
-
+  const data = useFetchMoviesQuery(currentPage);
+  // const { data : result } = useFetchMoviesQuery(currentPage);
+  // const moviesQuery = useFetchMoviesQuery();
+  // const results = moviesQuery.data;
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
 
-  return (
-    <CardList
-      list={movies}
-      listPages={totalPages}
-      currentPage={currentPage}
-      handlePageChange={handlePageChange}
-    />
-  );
+  const handleUndefined = (data) => {
+    if (data.isLoading) {
+      return (
+        <div>Loadingl</div>
+      )
+    } else {
+      return (
+        <CardList
+          list={data}
+          currentPage={currentPage}
+          handlePageChange={handlePageChange}
+        />
+      )
+    }
+  }
+
+  return handleUndefined(data)
+
 };
 
 export default Movies;

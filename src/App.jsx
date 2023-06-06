@@ -9,6 +9,7 @@ import {
 import { Provider } from 'react-redux';
 import {
   useFetchMovieGenresQuery,
+  useFetchSearchQuery,
   useFetchTvGenresQuery,
 } from './utilities/slice';
 import store from './utilities/store';
@@ -20,17 +21,18 @@ const Tv = lazy(() => import('./Pages/Tv'));
 const Details = lazy(() => import('./Pages/Details'));
 
 const App = () => {
-  const movieGenresQuery = useFetchMovieGenresQuery();
-  const tvGenresQuery = useFetchTvGenresQuery();
-  const movieGenres = movieGenresQuery.data;
-  const tvGenres = tvGenresQuery.data;
-
-  console.log('movgenre', movieGenres);
-
   const [searchTerm, setSearchTerm] = useState('');
   const handleSearch = (event) => {
+    event.preventDefault();
     setSearchTerm(event.target.value);
   };
+  const movieGenresQuery = useFetchMovieGenresQuery();
+  const tvGenresQuery = useFetchTvGenresQuery();
+  const searchQuery = useFetchSearchQuery(searchTerm);
+  const movieGenres = movieGenresQuery.data;
+  const tvGenres = tvGenresQuery.data;
+  const searchResult = searchQuery.data;
+
 
   return (
     <div>
@@ -51,6 +53,7 @@ const App = () => {
                 className="rounded bg-gray-700 px-4 py-2 text-white"
                 value={searchTerm}
                 onChange={handleSearch}
+                autoComplete='true'
               />
             </div>
             <div>
@@ -60,13 +63,13 @@ const App = () => {
                     to="/movies"
                     className="text-white hover:text-gray-400"
                   > */}
-                  <Dropdown genres={movieGenres} title={'Movies'} />
+                  <Dropdown list={movieGenres} title={'Movies'} />
                   {/* </NavLink> */}
                 </li>
 
                 <li>
                   {/* <NavLink to="/tv" className="text-white hover:text-gray-400"> */}
-                  <Dropdown genres={tvGenres} title={'TV'} />
+                  <Dropdown list={tvGenres} title={'TV'} />
                   {/* </NavLink> */}
                 </li>
               </ul>
