@@ -1,55 +1,45 @@
-import { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
+import {
+  useFetchMovieDetailsQuery,
+  useFetchTvDetailsQuery,
+} from '../utilities/slice';
 import DetailsLayout from '../components/DetailsLayout';
 
-const Details = () => {
+const Details = ({ type }) => {
   const { id } = useParams();
-  const [details, setDetails] = useState(null);
-  const [img, setImg] = useState('');
 
-  useEffect(() => {
-    const fetchDetails = async () => {
-      try {
-        const response = await fetch(
-          `https://api.themoviedb.org/3/movie/${id}?api_key=${
-            import.meta.env.VITE_API_KEY
-          }`
-        );
-        const data = await response.json();
-        console.log('details', data);
-        setDetails(data);
-        setImg(`https://api.themoviedb.org/3/movie/${id}`);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  let detailsQuery;
+  if (type === 'movie') {
+    detailsQuery = useFetchMovieDetailsQuery(id);
+  } else if (type === 'tv') {
+    detailsQuery = useFetchTvDetailsQuery(id);
+  }
 
-    fetchDetails();
-  }, [id]);
+  const isLoading = detailsQuery?.isLoading;
+  const isError = detailsQuery?.isError;
+  const details = detailsQuery?.data;
 
-  if (!details) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
+
+  if (isError) {
+    return <div>Error occurred while fetching details.</div>;
+  }
+
+  console.log('details', details);
 
   return (
     <DetailsLayout
       backgroundImage={`https://image.tmdb.org/t/p/w500/${details.backdrop_path}`}
       posterImage={`https://image.tmdb.org/t/p/w500/${details.poster_path}`}
-      title={details.title}
-      release_date={details.release_date}
+      title={details.title || details.name}
+      release_date={details.release_date || details.first_air_date}
       vote_average={details.vote_average}
       overview={details.overview}
+      type={type}
     />
-    // <div>
-    //     <h1 className="text-2xl font-bold mb-4">{details.title}</h1>
-    //     <img
-    //         src={`https://image.tmdb.org/t/p/w500/${details.poster_path}`}
-    //         alt={details.title}
-    //         className="w-64 h-96 object-cover rounded-lg"
-    //     />
-    //     <p className="text-gray-500">{details.release_date}</p>
-    //     <p className="mt-2">{details.overview}</p>
-    // </div>
   );
 };
 

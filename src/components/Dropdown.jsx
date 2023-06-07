@@ -17,8 +17,10 @@ const Dropdown = ({ list, title }) => {
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('click', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.addEventListener('click', handleClickOutside);
     };
   }, []);
 
@@ -35,15 +37,15 @@ const Dropdown = ({ list, title }) => {
         <ul className="absolute mt-1 space-y-2 rounded-md bg-gray-800 p-2 text-white">
           {list.genres && Array.isArray(list.genres)
             ? list.genres.map((genre) => (
-              <li key={genre.id}>
-                <NavLink
-                  to={`/movies?genre=${genre.id}`}
-                  className="block hover:text-gray-400"
-                >
-                  {genre.name}
-                </NavLink>
-              </li>
-            ))
+                <li key={genre.id}>
+                  <NavLink
+                    to={`/${title.toLowerCase()}?genre=${genre.id}`}
+                    className="block hover:text-gray-400"
+                  >
+                    {genre.name}
+                  </NavLink>
+                </li>
+              ))
             : []}
         </ul>
       )}

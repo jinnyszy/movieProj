@@ -15,9 +15,7 @@ const Movies = () => {
 
   const handleUndefined = (data) => {
     if (data.isLoading) {
-      return (
-        <div>Loadingl</div>
-      )
+      return <div>Loading</div>;
     } else {
       return (
         <CardList
@@ -25,12 +23,11 @@ const Movies = () => {
           currentPage={currentPage}
           handlePageChange={handlePageChange}
         />
-      )
+      );
     }
-  }
+  };
 
-  return handleUndefined(data)
-
+  return handleUndefined(data);
 };
 
 export default Movies;

@@ -121,7 +121,7 @@ const Carousel = (props) => {
                   }}
                 />
                 <Link
-                  to={`/movies/${item.id}`}
+                  to={`/${item.first_air_date ? 'tv' : 'movie'}/${item.id}`}
                   className="absolute left-0 top-0 z-10 block aspect-square h-full w-full bg-pink-600/75 opacity-0 transition-opacity duration-300 hover:opacity-100"
                 >
                   <h3 className="mx-auto px-3 py-6 text-xl text-white">

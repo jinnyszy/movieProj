@@ -1,9 +1,6 @@
-import { Component } from 'react';
 import { Link } from 'react-router-dom';
-import ErrorBoundary from './ErrorBoundary';
 
 const CardList = ({ list, currentPage, totalPages, handlePageChange }) => {
-
   return (
     <div className="mx-auto w-4/5">
       <div className="grid grid-cols-8 gap-4">
@@ -16,10 +13,10 @@ const CardList = ({ list, currentPage, totalPages, handlePageChange }) => {
                 className="h-96 w-full rounded-lg object-cover"
               />
               <Link
-                to={`/movies/${item.id}`}
+                to={`/movie/${item.id}`}
                 className="text-blue-500 hover:underline"
               >
-                {item.title}
+                {item.title ? item.title : item.name}
               </Link>
             </div>
           ))
@@ -45,6 +42,6 @@ const CardList = ({ list, currentPage, totalPages, handlePageChange }) => {
       </div>
     </div>
   );
-}
+};
 
 export default CardList;

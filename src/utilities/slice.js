@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
 export const moviesApi = createApi({
   reducerPath: 'moviesApi',
   baseQuery: fetchBaseQuery({
@@ -23,7 +24,13 @@ export const moviesApi = createApi({
     }),
     fetchSearch: builder.query({
       query: (query = '') => `search/multi?query=${query}`,
-    })
+    }),
+    fetchMovieDetails: builder.query({
+      query: (id) => `movie/${id}`,
+    }),
+    fetchMovieReviews: builder.query({
+      query: (id) => `movie/${id}/reviews`,
+    }),
   }),
 });
 
@@ -31,7 +38,9 @@ export const {
   useFetchNowShowingQuery,
   useFetchMoviesQuery,
   useFetchMovieGenresQuery,
-  useFetchSearchQuery
+  useFetchSearchQuery,
+  useFetchMovieDetailsQuery,
+  useFetchMovieReviewsQuery,
 } = moviesApi;
 
 export const tvSeriesApi = createApi({
@@ -53,7 +62,22 @@ export const tvSeriesApi = createApi({
     fetchTvGenres: builder.query({
       query: () => 'genre/tv/list',
     }),
+    fetchTvDetails: builder.query({
+      query: (id) => `tv/${id}`,
+    }),
+    fetchTvReviews: builder.query({
+      query: (id) => `tv/${id}/reviews`,
+    }),
+    fetchSimilarTVSeries: builder.query({
+      query: (id) => `tv/${id}/similar`,
+    }),
   }),
 });
 
-export const { useFetchTVSeriesQuery, useFetchTvGenresQuery } = tvSeriesApi;
+export const {
+  useFetchTVSeriesQuery,
+  useFetchTvGenresQuery,
+  useFetchTvDetailsQuery,
+  useFetchTvReviewsQuery,
+  useFetchSimilarTVSeriesQuery,
+} = tvSeriesApi;

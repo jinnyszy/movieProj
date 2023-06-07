@@ -26,7 +26,6 @@ const App = () => {
   const movieGenres = movieGenresQuery.data;
   const tvGenres = tvGenresQuery.data;
 
-
   return (
     <div>
       <Router>
@@ -40,16 +39,14 @@ const App = () => {
               </NavLink>
             </div>
             <div>
-              <SearchParams />
+              <ul className="flex space-x-4">
+                <SearchParams />
+              </ul>
             </div>
             <div>
               <ul className="flex space-x-4">
-                <li className="group relative">
-                  <Dropdown list={movieGenres} title={'Movies'} />
-                </li>
-                <li>
-                  <Dropdown list={tvGenres} title={'TV'} />
-                </li>
+                <Dropdown list={movieGenres} title={'Movie'} />
+                <Dropdown list={tvGenres} title={'TV'} />
               </ul>
             </div>
           </nav>
@@ -60,8 +57,8 @@ const App = () => {
               <Route path="/" element={<Home />} />
               <Route path="/movie" element={<Movies />} />
               <Route path="/tv" element={<Tv />} />
-              <Route path="/movie/:id" element={<Details />} />
-              <Route path="/tv/:id" element={<Details />} />
+              <Route path="/movie/:id" element={<Details type="movie" />} />
+              <Route path="/tv/:id" element={<Details type="tv" />} />
             </Routes>
           </Suspense>
         </div>
