@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   BrowserRouter as Router,
@@ -9,11 +9,11 @@ import {
 import { Provider } from 'react-redux';
 import {
   useFetchMovieGenresQuery,
-  useFetchSearchQuery,
   useFetchTvGenresQuery,
 } from './utilities/slice';
 import store from './utilities/store';
 import Dropdown from './components/Dropdown';
+import SearchParams from './components/SearchParams';
 
 const Home = lazy(() => import('./Pages/Home'));
 const Movies = lazy(() => import('./Pages/Movies'));
@@ -21,17 +21,10 @@ const Tv = lazy(() => import('./Pages/Tv'));
 const Details = lazy(() => import('./Pages/Details'));
 
 const App = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const handleSearch = (event) => {
-    event.preventDefault();
-    setSearchTerm(event.target.value);
-  };
   const movieGenresQuery = useFetchMovieGenresQuery();
   const tvGenresQuery = useFetchTvGenresQuery();
-  const searchQuery = useFetchSearchQuery(searchTerm);
   const movieGenres = movieGenresQuery.data;
   const tvGenres = tvGenresQuery.data;
-  const searchResult = searchQuery.data;
 
 
   return (
@@ -47,30 +40,15 @@ const App = () => {
               </NavLink>
             </div>
             <div>
-              <input
-                type="text"
-                placeholder="Search movies or TV shows"
-                className="rounded bg-gray-700 px-4 py-2 text-white"
-                value={searchTerm}
-                onChange={handleSearch}
-                autoComplete='true'
-              />
+              <SearchParams />
             </div>
             <div>
               <ul className="flex space-x-4">
                 <li className="group relative">
-                  {/* <NavLink
-                    to="/movies"
-                    className="text-white hover:text-gray-400"
-                  > */}
                   <Dropdown list={movieGenres} title={'Movies'} />
-                  {/* </NavLink> */}
                 </li>
-
                 <li>
-                  {/* <NavLink to="/tv" className="text-white hover:text-gray-400"> */}
                   <Dropdown list={tvGenres} title={'TV'} />
-                  {/* </NavLink> */}
                 </li>
               </ul>
             </div>
@@ -80,9 +58,10 @@ const App = () => {
           <Suspense fallback={<div>Loading...</div>}>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/movies" element={<Movies />} />
+              <Route path="/movie" element={<Movies />} />
               <Route path="/tv" element={<Tv />} />
-              <Route path="/movies/:id" element={<Details />} />
+              <Route path="/movie/:id" element={<Details />} />
+              <Route path="/tv/:id" element={<Details />} />
             </Routes>
           </Suspense>
         </div>
