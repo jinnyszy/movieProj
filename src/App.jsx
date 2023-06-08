@@ -15,10 +15,10 @@ import store from './utilities/store';
 import Dropdown from './components/Dropdown';
 import SearchParams from './components/SearchParams';
 
-const Home = lazy(() => import('./Pages/Home'));
-const Movies = lazy(() => import('./Pages/Movies'));
-const Tv = lazy(() => import('./Pages/Tv'));
-const Details = lazy(() => import('./Pages/Details'));
+const Home = lazy(() => import('./pages/Home'));
+const Movies = lazy(() => import('./pages/Movies'));
+const Tv = lazy(() => import('./pages/Tv'));
+const Details = lazy(() => import('./pages/Details'));
 
 const App = () => {
   const movieGenresQuery = useFetchMovieGenresQuery();
@@ -52,7 +52,13 @@ const App = () => {
           </nav>
         </header>
         <div className="mt-8">
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense
+            fallback={
+              <div className="loader">
+                <div className="loader-inner">🍿</div>
+              </div>
+            }
+          >
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/movie" element={<Movies />} />

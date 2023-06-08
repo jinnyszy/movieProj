@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import ErrorBoundary from './ErrorBoundary';
 
 const Carousel = (props) => {
   const { list } = props;
@@ -137,7 +136,9 @@ const Carousel = (props) => {
               </div>
             ))
           ) : (
-            <ErrorBoundary errorMsg={<h2>Error lol</h2>} />
+            <div className="loader">
+              <div className="loader-inner">🍿</div>
+            </div>
           )}
         </div>
       </div>

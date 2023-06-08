@@ -31,6 +31,9 @@ export const moviesApi = createApi({
     fetchMovieReviews: builder.query({
       query: (id) => `movie/${id}/reviews`,
     }),
+    fetchSimilarMovies: builder.query({
+      query: (id) => `movie/${id}/similar`,
+    }),
   }),
 });
 
@@ -41,6 +44,7 @@ export const {
   useFetchSearchQuery,
   useFetchMovieDetailsQuery,
   useFetchMovieReviewsQuery,
+  useFetchSimilarMoviesQuery,
 } = moviesApi;
 
 export const tvSeriesApi = createApi({

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import {
   useFetchMovieDetailsQuery,
@@ -21,7 +20,11 @@ const Details = ({ type }) => {
   const details = detailsQuery?.data;
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="loader">
+        <div className="loader-inner">🍿</div>
+      </div>
+    );
   }
 
   if (isError) {

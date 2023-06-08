@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
 import {
   useFetchMovieReviewsQuery,
   useFetchTvReviewsQuery,
   useFetchSimilarTVSeriesQuery,
+  useFetchSimilarMoviesQuery,
 } from '../utilities/slice';
 
 const DetailsLayout = ({
@@ -15,13 +17,18 @@ const DetailsLayout = ({
   overview,
   type,
 }) => {
+  const navigate = useNavigate();
   const { id } = useParams();
+  const [currentPage, setCurrentPage] = useState(1);
   const [expandedReviews, setExpandedReviews] = useState([]);
+
+  const itemsPerPage = 5;
 
   let detailsQuery;
   let similarResultsQuery;
   if (type === 'movie') {
     detailsQuery = useFetchMovieReviewsQuery(id);
+    similarResultsQuery = useFetchSimilarMoviesQuery(id);
   } else if (type === 'tv') {
     detailsQuery = useFetchTvReviewsQuery(id);
     similarResultsQuery = useFetchSimilarTVSeriesQuery(id);
@@ -31,9 +38,14 @@ const DetailsLayout = ({
   const isError = detailsQuery?.isError;
   const reviews = detailsQuery?.data;
   const similarResults = similarResultsQuery?.data;
+  const similarResultsCount = similarResultsQuery?.data?.total_results;
   console.log('revs', similarResults);
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="loader">
+        <div className="loader-inner">🍿</div>
+      </div>
+    );
   }
 
   if (isError) {
@@ -56,6 +68,17 @@ const DetailsLayout = ({
   const isReviewExpanded = (reviewId) => {
     return expandedReviews.includes(reviewId);
   };
+
+  const handlePageChange = (selectedPage) => {
+    setCurrentPage(selectedPage);
+  };
+
+  const offset = currentPage * itemsPerPage;
+  const pageCount = Math.ceil(similarResultsCount / itemsPerPage);
+  const paginatedResults = similarResults?.results.slice(
+    offset,
+    offset + itemsPerPage
+  );
 
   return (
     <div className="bg-gradient-to-b from-gray-300 to-transparent pt-20">
@@ -110,7 +133,7 @@ const DetailsLayout = ({
                   <h2 className="m-5 rounded-lg pt-10 text-2xl font-bold text-black">
                     Reviews
                   </h2>
-                  {reviews ? (
+                  {reviews && reviews.results.length > 0 ? (
                     reviews.results.map((item) => (
                       <div
                         className="m-10 rounded-lg p-10 shadow"
@@ -143,7 +166,7 @@ const DetailsLayout = ({
                       </div>
                     ))
                   ) : (
-                    <p>No reviews available</p>
+                    <div>no reviews available ☹️☹️</div>
                   )}
                 </div>
               </div>
@@ -154,24 +177,42 @@ const DetailsLayout = ({
                   <h2 className="text-2xl font-bold text-black">
                     Similar Results
                   </h2>
-                  {similarResults && similarResults.results ? (
-                    similarResults.results.map((item) => (
+                  {paginatedResults && paginatedResults.length > 0 ? (
+                    paginatedResults.map((item) => (
                       <div key={item.id}>
-                        <Link to={`${item.id}`}>
+                        <Link
+                          to={`/${type}/${item.id}`}
+                          onClick={() => navigate(`/${type}/${item.id}`)}
+                        >
                           <img
                             src={`https://image.tmdb.org/t/p/w1280/${item.backdrop_path}`}
-                            alt={item.name}
+                            alt={item.name || item.title}
                             className="w-48 rounded-lg shadow-lg"
                           />
-                          <h3 className="hover:text-blue-500">{item.name}</h3>
+                          <h3 className="hover:text-blue-500">
+                            {item.name || item.title}
+                          </h3>
                         </Link>
                       </div>
                     ))
                   ) : (
-                    <p>No similar results</p>
+                    <div>no similar results</div>
                   )}
                 </div>
               </div>
+              {similarResults && similarResults.results && (
+                <ReactPaginate
+                  previousLabel={'Previous'}
+                  nextLabel={'Next'}
+                  breakLabel={'...'}
+                  pageCount={pageCount}
+                  marginPagesDisplayed={2}
+                  pageRangeDisplayed={5}
+                  onPageChange={handlePageChange}
+                  containerClassName={'pagination'}
+                  activeClassName={'active'}
+                />
+              )}
             </div>
           </div>
         </div>

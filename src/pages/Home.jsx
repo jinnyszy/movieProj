@@ -35,7 +35,7 @@ const Home = () => {
       <div className="mb-8">
         <div className="px-10 py-3 2xl:container 2xl:mx-auto 2xl:px-0">
           <Link
-            to="/movies"
+            to="/movie"
             className="mb-4 text-center text-2xl font-bold hover:text-gray-400"
           >
             Popular Movies

@@ -1,30 +1,39 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useFetchTVSeriesQuery } from '../utilities/slice';
 import CardList from '../components/CardList';
 const Tv = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const data = useFetchTVSeriesQuery(currentPage);
+  const tv = useFetchTVSeriesQuery(currentPage);
+  const totalPages = tv?.data?.total_pages;
 
-  const handlePageChange = (newPage) => {
+  const handlePageChange = (event) => {
+    if (event.selected === currentPage - 1) {
+      return;
+    }
+    const newPage = event.selected + 1;
+    console.log('selected', event.selected);
     setCurrentPage(newPage);
   };
 
   const handleUndefined = (data) => {
     if (data.isLoading) {
       return (
-        <div>Loading</div>
-      )
+        <div className="loader">
+          <div className="loader-inner">🍿</div>
+        </div>
+      );
     } else {
       return (
         <CardList
-          list={data}
-          currentPage={currentPage}
+          list={tv}
           handlePageChange={handlePageChange}
+          totalPages={totalPages}
+          type="tv"
         />
-      )
+      );
     }
-  }
+  };
 
-  return handleUndefined(data)
+  return handleUndefined(tv);
 };
 export default Tv;

@@ -1,4 +1,4 @@
-import Movies from '../Pages/Movies';
+import Movies from '../pages/Movies';
 
 const Results = ({ movies }) => {
   return (

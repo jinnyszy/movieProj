@@ -1,14 +1,29 @@
-import React, { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useFetchSearchQuery } from '../utilities/slice';
 import { Link } from 'react-router-dom';
 
 const SearchParams = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const dropdownRef = useRef(null);
+
   const {
     data: searchResults,
     isLoading,
     isError,
   } = useFetchSearchQuery(searchTerm);
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.addEventListener('click', handleClickOutside);
+    };
+  }, []);
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -39,7 +54,11 @@ const SearchParams = () => {
           />
         </div>
       </form>
-      {isLoading && <p>Loading...</p>}
+      {isLoading && (
+        <div className="loader">
+          <div className="loader-inner">🍿</div>
+        </div>
+      )}
       {isError && <p>Error occurred while searching.</p>}
 
       {searchResults && searchResults.results ? (
@@ -56,7 +75,9 @@ const SearchParams = () => {
             ))}
           </ul>
         </div>
-      ) : []}
+      ) : (
+        <div>Nothing to see here</div>
+      )}
     </div>
   );
 };
