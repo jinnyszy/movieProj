@@ -42,7 +42,7 @@ const SearchParams = () => {
       {isLoading && <p>Loading...</p>}
       {isError && <p>Error occurred while searching.</p>}
 
-      {searchResults && searchResults.results && (
+      {searchResults && searchResults.results ? (
         <div className="absolute top-full z-20 mt-2 rounded-md bg-white p-2 text-black">
           <ul>
             {searchResults.results.map((result) => (
@@ -56,7 +56,7 @@ const SearchParams = () => {
             ))}
           </ul>
         </div>
-      )}
+      ) : []}
     </div>
   );
 };

@@ -1,6 +1,10 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
 
-const CardList = ({ list, currentPage, totalPages, handlePageChange }) => {
+const CardList = ({ list, currentPage, totalPages, handlePageChange, totalResults }) => {
+  const [resultsPerPage] = useState(30);
+
   return (
     <div className="mx-auto w-4/5">
       <div className="grid grid-cols-8 gap-4">
@@ -25,20 +29,38 @@ const CardList = ({ list, currentPage, totalPages, handlePageChange }) => {
         )}
       </div>
       <div className="m-10 flex flex-wrap justify-evenly">
-        <button
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel="next >"
+          onPageChange={handlePageChange}
+          pageRangeDisplayed={5}
+          pageCount={totalPages}
+          previousLabel="< previous"
+          renderOnZeroPageCount={null}
+        />
+        {/* <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
           className="mr-2 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
         >
           Previous
         </button>
+        {
+          totalPages.map(pgNumber => (
+            <li key={pgNumber} >
+              <a onClick={() => handlePageChange(currentPage)}>
+                {pgNumber}
+              </a>
+            </li>
+          ))
+        }
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
         >
           Next
-        </button>
+        </button> */}
       </div>
     </div>
   );
