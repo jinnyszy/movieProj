@@ -3,9 +3,12 @@ import { useFetchTVSeriesQuery } from '../utilities/slice';
 import CardList from '../components/CardList';
 const Tv = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const tv = useFetchTVSeriesQuery(currentPage);
+  const date = new Date().getTime();
+  console.log('date', date)
+  const tv = useFetchTVSeriesQuery({ page: currentPage, date: date });
   const totalPages = tv?.data?.total_pages;
 
+  console.log('totalpages', totalPages)
   const handlePageChange = (event) => {
     if (event.selected === currentPage - 1) {
       return;

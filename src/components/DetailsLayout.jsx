@@ -182,7 +182,7 @@ const DetailsLayout = ({
                       <div key={item.id}>
                         <Link
                           to={`/${type}/${item.id}`}
-                          onClick={() => navigate(`/${type}/${item.id}`)}
+                        // onClick={() => navigate(`/${type}/${item.id}`)}
                         >
                           <img
                             src={`https://image.tmdb.org/t/p/w1280/${item.backdrop_path}`}

@@ -61,7 +61,12 @@ export const tvSeriesApi = createApi({
   }),
   endpoints: (builder) => ({
     fetchTVSeries: builder.query({
-      query: (page = 1) => `tv/popular?page=${page}`,
+      query: (args) => {
+        const { page, date } = args;
+        return {
+          url: `tv/popular?page=${page}&test=${date}`
+        }
+      },
     }),
     fetchTvGenres: builder.query({
       query: () => 'genre/tv/list',
